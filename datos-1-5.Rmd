@@ -138,6 +138,7 @@ template: diapo-basica
 Las expresiones `if_else` son bastante flexibles y aceptan expresiones como las de
 `mutate`, siempre y cuando **hagan referencia al mismo tipo de datos en todos los casos**.
 --
+
 Un ejemplo
 
 ```{r, warning=FALSE, eval=TRUE, echo = T}
@@ -159,6 +160,7 @@ template: diapo-basica
 
 Las expresiones `if_else` son bastante flexibles y aceptan expresiones como las de
 `mutate`, siempre y cuando **hagan referencia al mismo tipo de datos en todos los casos (true, false, missing)**.
+
 --
 
 Otro ejemplo:
