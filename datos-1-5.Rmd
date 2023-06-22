@@ -26,7 +26,9 @@ class: center, middle
 
 ## Proyecto Ciencia de Datos
 
-### Mayo 2023
+## Herramientas de edición de datos II 
+
+
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = TRUE)
@@ -238,7 +240,7 @@ Recodifiquemos las regiones:
 
 ```{r, eval=T, echo=T}
 regiones_cod = regiones %>% mutate(region_cod = case_when(region == 1 ~ 'Arica y Parinacota',
-                                                          region == 2 ~ 'Antoagasta',
+                                                          region == 2 ~ 'Antofagasta',
                                                           region == 3 ~ 'Atacama')) 
 ```
 
@@ -256,7 +258,7 @@ Recodifiquemos las regiones:
 
 ```{r, eval=T, echo=T}
 regiones_cod = regiones %>% mutate(region_cod = case_when(region == 1 ~ 'Arica y Parinacota',
-                                                          region == 2 ~ 'Antoagasta',
+                                                          region == 2 ~ 'Antofagasta',
                                                           region == 3 ~ 'Atacama')) 
 ```
 
@@ -281,7 +283,7 @@ Recodifiquemos las regiones:
 
 ```{r, eval=T, echo=T}
 regiones_cod = regiones %>% mutate(region_cod = case_when(region == 1 ~ 'Arica y Parinacota',
-                                                          region == 2 ~ 'Antoagasta',
+                                                          region == 2 ~ 'Antofagasta',
                                                           region == 3 ~ 'Atacama',
                                                           TRUE ~ 'Otra')) #<< 
 ```
@@ -365,4 +367,5 @@ class: center, middle
 
 ## Proyecto Ciencia de Datos
 
-### Mayo 2023
+## Herramientas de edición de datos II 
+

@@ -4,7 +4,7 @@
     <title>R and databases</title>
     <meta charset="utf-8" />
     <meta name="author" content="" />
-    <meta name="date" content="2023-06-16" />
+    <meta name="date" content="2023-06-22" />
     <script src="datos-1-5_files/header-attrs-2.22/header-attrs.js"></script>
     <script src="datos-1-5_files/kePrint-0.0.1/kePrint.js"></script>
     <link href="datos-1-5_files/lightable-0.0.1/lightable.css" rel="stylesheet" />
@@ -25,7 +25,9 @@ class: center, middle
 
 ## Proyecto Ciencia de Datos
 
-### Mayo 2023
+## Herramientas de edición de datos II 
+
+
 
 
 
@@ -389,7 +391,7 @@ Recodifiquemos las regiones:
 
 ```r
 regiones_cod = regiones %&gt;% mutate(region_cod = case_when(region == 1 ~ 'Arica y Parinacota',
-                                                          region == 2 ~ 'Antoagasta',
+                                                          region == 2 ~ 'Antofagasta',
                                                           region == 3 ~ 'Atacama')) 
 ```
 
@@ -417,7 +419,7 @@ regiones_cod = regiones %&gt;% mutate(region_cod = case_when(region == 1 ~ 'Aric
    &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 900000 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 650000 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; Antoagasta &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Antofagasta &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
@@ -453,7 +455,7 @@ Recodifiquemos las regiones:
 
 ```r
 regiones_cod = regiones %&gt;% mutate(region_cod = case_when(region == 1 ~ 'Arica y Parinacota',
-                                                          region == 2 ~ 'Antoagasta',
+                                                          region == 2 ~ 'Antofagasta',
                                                           region == 3 ~ 'Atacama')) 
 ```
 
@@ -481,7 +483,7 @@ regiones_cod = regiones %&gt;% mutate(region_cod = case_when(region == 1 ~ 'Aric
    &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 900000 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 650000 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: white !important;"&gt;Antoagasta&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: white !important;"&gt;Antofagasta&lt;/span&gt; &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
@@ -519,7 +521,7 @@ Recodifiquemos las regiones:
 
 ```r
 regiones_cod = regiones %&gt;% mutate(region_cod = case_when(region == 1 ~ 'Arica y Parinacota',
-                                                          region == 2 ~ 'Antoagasta',
+                                                          region == 2 ~ 'Antofagasta',
                                                           region == 3 ~ 'Atacama',
 *                                                         TRUE ~ 'Otra'))
 ```
@@ -548,7 +550,7 @@ regiones_cod = regiones %&gt;% mutate(region_cod = case_when(region == 1 ~ 'Aric
    &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 900000 &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 650000 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: white !important;"&gt;Antoagasta&lt;/span&gt; &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: white !important;"&gt;Antofagasta&lt;/span&gt; &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
@@ -728,7 +730,8 @@ class: center, middle
 
 ## Proyecto Ciencia de Datos
 
-### Mayo 2023
+## Herramientas de edición de datos II 
+
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
