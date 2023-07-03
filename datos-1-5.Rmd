@@ -99,7 +99,7 @@ se cumple en la fila, tomará el valor asignado en `valor_si_verdadero`, si no, 
 
 ```{r, warning=FALSE, eval=T}
 
-tabla_ejemplo <- data.frame(nombre = c('Claudio', 'Francisco', 'Francisca', 'Pedro'),
+tabla_ejemplo <- tibble(nombre = c('Claudio', 'Francisco', 'Francisca', 'Pedro'),
                     edad = c(33, 44, 22, 31),
                     estatura = c(171, 153, NA, 160))
 
@@ -137,15 +137,17 @@ template: diapo-basica
 ## if_else
 
 Las expresiones `if_else` son bastante flexibles y aceptan expresiones como las de
-`mutate`, siempre y cuando **hagan referencia al mismo tipo de datos en todos los casos**.
+`mutate`, siempre y cuando **hagan referencia al mismo tipo de datos en todos los casos (true, false, missing)**.
+
 --
 
 Un ejemplo
 
+
 ```{r, warning=FALSE, eval=TRUE, echo = T}
 tabla_ejemplo3 = tabla_ejemplo  %>% mutate(col_prueba = if_else(condition = edad > 35,
-                                                                true = edad * 2,
-                                               false = (estatura - 100)))
+                                                                true = 'Mayor de 35',
+                                               false = 'Menor de 35'))
 ```
 
 --

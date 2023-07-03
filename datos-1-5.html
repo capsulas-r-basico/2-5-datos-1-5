@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>R and databases</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="" />
+    <meta name="date" content="2023-07-03" />
+    <script src="datos-1-5_files/header-attrs-2.21/header-attrs.js"></script>
+    <script src="datos-1-5_files/kePrint-0.0.1/kePrint.js"></script>
+    <link href="datos-1-5_files/lightable-0.0.1/lightable.css" rel="stylesheet" />
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+class: center, middle
+
+.linea-superior[]
+.linea-inferior[]
+
+&lt;img src="imagenes/logo_portada2.png" width="200" /&gt;
+
+## INE Educa: Clases abiertas de R
+
+## Proyecto Ciencia de Datos
+
+## Herramientas de edición de datos II 
+
+
+
+
+
+
+
+---
+
+name: diapo-basica
+background-image: url("imagenes/fondo2.PNG")
+background-size: contain;
+background-position: 100% 0%
+
+# Edición de datos II: lógica condicional
+---
+
+template: diapo-basica
+
+Ahora sabemos cómo crear columnas y modificar columnas existentes.
+
+Sin embargo, las funciones que vimos se aplican de igual manera a toda la columna.
+
+--
+
+A veces (***muchas*** veces), queremos aplicar **lógica condicional** a la creación o modificación de columnas.
+
+¿Qué significa esto?
+
+--
+
+.center[
+&lt;img src="imagenes/prueba_logica.png" width="600" /&gt;]
+
+
+---
+
+template: diapo-basica
+
+## if_else
+
+
+Esta función permite implementar la lógica anterior y tiene la siguiente sintaxis:
+
+
+```r
+if_else(condicion_logica, valor_si_verdadero, valor_si_falso, valor_si_missing)
+```
+--
+
+Esto podría leerse de la siguiente manera: evalúa la condición `condicion_logica` en cada fila, si esta
+se cumple en la fila, tomará el valor asignado en `valor_si_verdadero`, si no, toma el valor asignado en
+`valor_si_falso`. Por último, si la fila tenía un NA, nos permite especificar qué valor toma con `valor_si_missing`.
+
+--
+ Para aplicar esta función, volveremos a crear un dataset de prueba:
+
+
+
+```r
+tabla_ejemplo &lt;- tibble(nombre = c('Claudio', 'Francisco', 'Francisca', 'Pedro'),
+                    edad = c(33, 44, 22, 31),
+                    estatura = c(171, 153, NA, 160))
+```
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; nombre &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; edad &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; estatura &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Claudio &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 33 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 171 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Francisco &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 44 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 153 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Francisca &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 22 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Pedro &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 31 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 160 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+---
+
+template: diapo-basica
+
+## if_else
+
+Marquemos en una nueva columna `mas_de_170` a las personas que miden más de 170cm y 
+asignemos un valor especial `-66` para quienes tienen un valor nulo (`NA`).
+
+
+```r
+tabla_ejemplo2 = tabla_ejemplo  %&gt;% mutate(mas_de_170 = if_else(condition = estatura &gt; 170,
+                                                                true = 1, false = 0,
+                                                                missing = -66))
+```
+
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; nombre &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; edad &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; estatura &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; mas_de_170 &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Claudio &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 33 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 171 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Francisco &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 44 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 153 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Francisca &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 22 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -66 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Pedro &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 31 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 160 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+---
+template: diapo-basica
+
+## if_else
+
+Las expresiones `if_else` son bastante flexibles y aceptan expresiones como las de
+`mutate`, siempre y cuando **hagan referencia al mismo tipo de datos en todos los casos (true, false, missing)**.
+
+--
+
+Un ejemplo
+
+
+
+```r
+tabla_ejemplo3 = tabla_ejemplo  %&gt;% mutate(col_prueba = if_else(condition = edad &gt; 35,
+                                                                true = 'Mayor de 35',
+                                               false = 'Menor de 35'))
+```
+
+--
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; nombre &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; edad &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; estatura &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; col_prueba &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Claudio &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 33 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 171 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Menor de 35 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Francisco &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 44 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 153 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Mayor de 35 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Francisca &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 22 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Menor de 35 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Pedro &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 31 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 160 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Menor de 35 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+template: diapo-basica
+
+## if_else
+
+Las expresiones `if_else` son bastante flexibles y aceptan expresiones como las de
+`mutate`, siempre y cuando **hagan referencia al mismo tipo de datos en todos los casos (true, false, missing)**.
+
+--
+
+Otro ejemplo:
+
+
+```r
+tabla_ejemplo4 = tabla_ejemplo  %&gt;%
+  mutate(empieza_con_F = if_else(condition = nombre %&gt;% stringr::str_starts('F'),
+                                 true = 'Sí',
+                                 false = 'No'))
+```
+
+--
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; nombre &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; edad &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; estatura &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; empieza_con_F &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Claudio &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 33 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 171 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; No &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Francisco &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 44 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 153 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Sí &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Francisca &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 22 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Sí &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Pedro &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 31 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 160 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; No &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+---
+template: diapo-basica
+
+## case_when
+
+Cuando queremos generar una variable en base a más de una condición, la mejor alternativa
+es el uso de la función `case_when`. Esta función tiene una sintaxis ligeramente distinta:
+--
+
+
+```r
+case_when(condicion_logica1 ~ valor_si_condicion1,
+        condicion_logica2 ~ valor_si_condicion2,
+        condicion_logica3 ~ valor_si_condicion3,
+        etc)
+```
+
+Puntos importantes a tener presente:
+
+--
+
+Si no se cumple una condición, el valor asignado será `NA`.
+
+--
+
+Las condiciones se evalúan en orden. Una vez se cumple una para una fila, se le asigna el valor
+correspondiente y el resto de condiciones dejan de evaluarse.
+
+---
+template: diapo-basica
+
+## case_when
+
+Veamos ejemplos que ilustren la función y los puntos anteriores.
+
+--
+
+Creamos un dataframe de ejemplo:
+
+
+```r
+regiones = data.frame(region = c(1:3, -99, NA),
+                      ingreso_promedio = c(8.5e5, 9e5, 9.5e5, 1e6, 1.5e6),
+                      ingreso_mediano = c(4.5e5, 6.5e5, 7e5, 8e5, 8.1e5)) %&gt;% 
+  # Agregamos identificador de fila como primera columna:
+  mutate(id_fila = row_number(), .before = region)
+```
+
+--
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; id_fila &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; region &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; ingreso_promedio &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; ingreso_mediano &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 850000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 450000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 900000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 650000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 950000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 700000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -99 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1000000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 800000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1500000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 810000 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+---
+template: diapo-basica
+
+## case_when
+
+Recodifiquemos las regiones:
+
+--
+
+
+```r
+regiones_cod = regiones %&gt;% mutate(region_cod = case_when(region == 1 ~ 'Arica y Parinacota',
+                                                          region == 2 ~ 'Antofagasta',
+                                                          region == 3 ~ 'Atacama')) 
+```
+
+--
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; id_fila &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; region &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; ingreso_promedio &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; ingreso_mediano &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; region_cod &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 850000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 450000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Arica y Parinacota &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 900000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 650000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Antofagasta &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 950000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 700000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Atacama &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -99 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1000000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 800000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1500000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 810000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+---
+template: diapo-basica
+
+## case_when
+
+Recodifiquemos las regiones:
+
+
+
+```r
+regiones_cod = regiones %&gt;% mutate(region_cod = case_when(region == 1 ~ 'Arica y Parinacota',
+                                                          region == 2 ~ 'Antofagasta',
+                                                          region == 3 ~ 'Atacama')) 
+```
+
+
+&lt;table class="table" style="margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; id_fila &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; region &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; ingreso_promedio &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; ingreso_mediano &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; region_cod &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 850000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 450000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: white !important;"&gt;Arica y Parinacota&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 900000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 650000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: white !important;"&gt;Antofagasta&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 950000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 700000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: white !important;"&gt;Atacama&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -99 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1000000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 800000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: red !important;"&gt;NA&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1500000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 810000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: red !important;"&gt;NA&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+¿Qué podemos hacer para evitar que queden NA en la nueva columna?
+
+---
+template: diapo-basica
+
+## case_when
+
+Recodifiquemos las regiones:
+
+
+
+```r
+regiones_cod = regiones %&gt;% mutate(region_cod = case_when(region == 1 ~ 'Arica y Parinacota',
+                                                          region == 2 ~ 'Antofagasta',
+                                                          region == 3 ~ 'Atacama',
+*                                                         TRUE ~ 'Otra'))
+```
+--
+
+&lt;table class="table" style="margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; id_fila &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; region &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; ingreso_promedio &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; ingreso_mediano &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; region_cod &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 850000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 450000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: white !important;"&gt;Arica y Parinacota&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 900000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 650000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: white !important;"&gt;Antofagasta&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 950000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 700000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: white !important;"&gt;Atacama&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -99 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1000000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 800000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: red !important;"&gt;Otra&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1500000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 810000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: red !important;"&gt;Otra&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+Al añadir la condición `TRUE` al final (que siempre será evaluada como verdadera), agregamos
+un valor para cuando ninguna de las otras condiciones se haya cumplido.
+
+---
+template: diapo-basica
+
+## case_when
+
+Veamos un caso en que se cumpla más de una condición. Creemos categorías en base a condiciones arbitrarias:
+
+
+
+```r
+regiones_cat = regiones %&gt;% mutate(categoria = case_when(ingreso_promedio &gt; 1000000 ~ '1',
+                                                          ingreso_mediano &gt;= 800000 ~ '2',
+                                                          ingreso_mediano &lt; 680000 ~ '3',
+                                                          TRUE ~ 'Otra'))
+```
+--
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; id_fila &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; region &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; ingreso_promedio &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; ingreso_mediano &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; categoria &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 850000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 450000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 3 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 900000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 650000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 3 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 950000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 700000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Otra &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -99 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1000000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 800000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 2 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1500000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 810000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; 1 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+template: diapo-basica
+
+## case_when
+
+Ahora invirtamos la primera y la segunda condición:
+
+
+
+```r
+*regiones_cat2 = regiones %&gt;% mutate(categoria = case_when(ingreso_mediano &gt;= 800000 ~ '2',
+*                                                         ingreso_promedio &gt; 1000000 ~ '1',
+                                                          ingreso_mediano &lt; 680000 ~ '3',
+                                                          TRUE ~ 'Otra')) 
+```
+
+
+
+&lt;table class="table" style="margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; id_fila &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; region &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; ingreso_promedio &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; ingreso_mediano &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; categoria &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 850000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 450000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: white !important;"&gt;3&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 900000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 650000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: white !important;"&gt;3&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 950000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 700000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: white !important;"&gt;Otra&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -99 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1000000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 800000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style="     color: black !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: white !important;"&gt;2&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1500000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 810000 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; &lt;span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: red !important;"&gt;2&lt;/span&gt; &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+--
+
+Es **sumamente importante** ser cuidadoso/a con el orden de las condiciones cuando puede cumplirse más de una,
+pues, como vimos, puede tener efectos imprevistos en las columnas creadas.
+
+---
+
+class: center, middle
+
+.linea-superior[]
+.linea-inferior[]
+
+&lt;img src="imagenes/logo_portada2.png" width="200" /&gt;
+
+
+## INE Educa: Clases abiertas de R
+
+## Proyecto Ciencia de Datos
+
+## Herramientas de edición de datos II 
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "13:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
